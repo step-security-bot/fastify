@@ -15,8 +15,13 @@ jobs:
       github.event.pull_request.merged &&
       contains(github.event.pull_request.labels.*.name, 'missing-types')
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+        with:
+          egress-policy: audit
+
       - name: Create an issue
-        uses: octokit/request-action@v2.x
+        uses: octokit/request-action@b074a26ca664c4af577b79c2daa7c588bda70e87 # v2.x
         with:
           route: POST /repos/{owner}/{repo}/issues
           owner: ${{ github.repository_owner }}

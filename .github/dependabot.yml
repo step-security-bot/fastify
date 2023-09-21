@@ -35,3 +35,13 @@ updates:
     ignore:
         - dependency-name: tap
           update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: npm
+    directory: /test/bundler/esbuild
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /test/bundler/webpack
+    schedule:
+      interval: daily
