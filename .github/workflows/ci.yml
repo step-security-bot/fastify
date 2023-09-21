@@ -20,6 +20,9 @@ concurrency:
   group: "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   dependency-review:
       name: Dependency Review
@@ -28,13 +31,18 @@ jobs:
       permissions:
         contents: read
       steps:
+          - name: Harden Runner
+            uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+            with:
+              egress-policy: audit
+
           - name: Check out repo
-            uses: actions/checkout@v4
+            uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
             with:
               persist-credentials: false
 
           - name: Dependency review
-            uses: actions/dependency-review-action@v3
+            uses: actions/dependency-review-action@6c5ccdad469c9f8a2996bfecaec55a631a347034 # v3.1.0
 
   check-licenses:
     name: Check licenses
@@ -42,12 +50,17 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
           persist-credentials: false
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
           node-version: 'lts/*'
           cache: 'npm'
@@ -67,12 +80,17 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
           persist-credentials: false
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
           node-version: 'lts/*'
           cache: 'npm'
@@ -117,12 +135,17 @@ jobs:
             node-version: 14
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
           persist-credentials: false
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -146,11 +169,16 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
           persist-credentials: false
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
           node-version: '20'
           cache: 'npm'
@@ -174,11 +202,16 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
           persist-credentials: false
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
         with:
           node-version: 'lts/*'
           cache: 'npm'
@@ -212,6 +245,11 @@ jobs:
       pull-requests: write
       contents: write
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+        with:
+          egress-policy: audit
+
+      - uses: fastify/github-action-merge-dependabot@59fc8817458fac20df8884576cfe69dbb77c9a07 # v3.9.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

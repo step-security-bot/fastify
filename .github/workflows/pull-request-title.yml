@@ -7,7 +7,12 @@ jobs:
   pull-request-title-check:
     runs-on: ubuntu-latest
     steps:
-    - uses: fastify/action-pr-title@v0
+    - name: Harden Runner
+      uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+      with:
+        egress-policy: audit
+
+    - uses: fastify/action-pr-title@9a11f057b2cd77cbdee5f14e7d1e733bf39204c6 # v0
       with:
         regex: '/^(build|chore|ci|docs|feat|types|fix|perf|refactor|style|test)(?:\([^\):]*\))?:\s/'
         github-token: ${{ github.token }}
